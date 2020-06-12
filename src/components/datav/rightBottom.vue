@@ -8,11 +8,10 @@
       />
     </div>
     <div class="cards-item">
-<!--      <ve-bar-->
-<!--        :data="chartDataAddress"-->
-<!--        :settings="chartSettingsAddress"-->
-<!--        :extend="chartExtendAddress"-->
-<!--      />-->
+      <ve-pie
+        :data="chartData1"
+        :extend="chartExtend1"
+      />
     </div>
     <div class="cards-item">
       <ve-radar
@@ -47,20 +46,10 @@ export default {
         }
       }
     }
-    this.chartSettings = {
-      level: [['all'], ['all']],
-      radius: 120,
-      offsetY: 200
-    }
-    this.chartSettingsAddress = {
-      roseType: 'radius',
-      radius: 130,
-      offsetY: 200
-    }
-    this.chartExtendAddress = {
+    this.chartExtend1 = {
       title: {
         show: true,
-        text: '用户分布',
+        text: '半年未活跃用户',
         left: '20',
         textStyle: {
           color: '#fff',
@@ -71,12 +60,17 @@ export default {
         }
       },
       legend: {
-        show: false,
+        show: true,
         top: 50,
         textStyle: {
           color: '#fff'
         }
       }
+    }
+    this.chartSettings = {
+      level: [['all'], ['all']],
+      radius: 120,
+      offsetY: 200
     }
     this.chartExtendOrder = {
       title: {
@@ -131,8 +125,8 @@ export default {
           { 'name': 'all', 'num': 100 }
         ]
       },
-      chartDataAddress: {
-        columns: ['name', 'num'],
+      chartData1: {
+        columns: ['名称', '数值'],
         rows: []
       },
       chartDataOrder: {
@@ -168,8 +162,16 @@ export default {
         }
         var list = [arr01, arr02]
         this.chartSettings.level = list
-      }, function () {
-        console.log('请求失败处理')
+      })
+      // 获取半年活跃量
+      this.$http.get('/api/Statistics/InactiveUsersForHalfAYear').then(function (res) {
+        const data = JSON.parse(res.data)
+        for (let i = 0; i < data.length; i++) {
+          var rows = {}
+          rows['名称'] = data[i].name
+          rows['数值'] = data[i].num
+          this.chartData1.rows.push(rows)
+        }
       })
     }
   }

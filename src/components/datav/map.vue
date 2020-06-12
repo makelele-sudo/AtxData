@@ -16,160 +16,206 @@ export default {
     drawLine () {
       // 基于准备好的dom，初始化echarts实例
       let myChart = this.$echarts.init(document.getElementById('myChart'))
-      let geoCoordMap = {
-        '成都': [103.9526, 30.7617],
-        '西安': [109.1162, 34.2004],
-        '西宁': [101.4038, 36.8207],
-        '哈尔滨': [ 127.9688, 45.368 ]
-      }
+      var mapName = 'china'
+      var geoCoordMap = {}
 
-      var XAData = [
-        [{ name: '西安' }, { name: '西安', value: 'http://www.atx.net.cn' }],
-        [{ name: '西安' }, { name: '成都', value: 'http://www.baidu.com' }],
-        [{ name: '西安' }, { name: '西宁', value: 'http://www.baidu.com' }],
-        [{ name: '西安' }, { name: '哈尔滨', value: 'http://www.baidu.com' }]
-      ]
+      // 获取地图数据
+      myChart.showLoading()
+      var mapFeatures = this.$echarts.getMap(mapName).geoJson.features
+      myChart.hideLoading()
+      mapFeatures.forEach(function (v) {
+        // 地区名称
+        var name = v.properties.name
+        // 地区经纬度
+        geoCoordMap[name] = v.properties.cp
+      })
 
-      var planePath = 'path://M1705.06,1318.313v-89.254l-319.9-221.799l0.073-208.063c0.521-84.662-26.629-121.796-63.961-121.491c-37.332-0.305-64.482,36.829-63.961,121.491l0.073,208.063l-319.9,221.799v89.254l330.343-157.288l12.238,241.308l-134.449,92.931l0.531,42.034l175.125-42.917l175.125,42.917l0.531-42.034l-134.449-92.931l12.238-241.308L1705.06,1318.313z'
-
+      var data = []
       var convertData = function (data) {
-        var res = []
+        var array = []
         for (var i = 0; i < data.length; i++) {
-          var dataItem = data[i]
-          var fromCoord = geoCoordMap[dataItem[0].name]
-          var toCoord = geoCoordMap[dataItem[1].name]
-          if (fromCoord && toCoord) {
-            res.push({
-              fromName: dataItem[0].name,
-              toName: dataItem[1].name,
-              coords: [fromCoord, toCoord],
-              value: dataItem[1].value
+          var sheng = data[i].name.replace('省', '').replace('市', '').replace('自治区', '')
+          var geoCoord = geoCoordMap[sheng]
+          if (geoCoord) {
+            array.push({
+              name: sheng,
+              value: geoCoord.concat(data[i].value)
             })
           }
         }
-        return res
+        return array
       }
-
-      var color = ['#a6c84c', '#ffa022', '#46bee9']
-      var series = [];
-      [[ '西安', XAData ]].forEach(function (item, i) {
-        series.push({
-          name: item[0],
-          type: 'lines',
-          zlevel: 1,
-          effect: {
-            show: true,
-            period: 10,
-            trailLength: 0.7,
-            color: '#fff',
-            symbolSize: 3
-          },
-          lineStyle: {
-            normal: {
-              color: color[i],
-              width: 0,
-              curveness: 0.2
-            }
-          },
-          data: convertData(item[1])
+      var option = {
+        backgroundColor: {
+          type: 'linear',
+          x: 0,
+          y: 0,
+          x2: 1,
+          y2: 1,
+          colorStops: [{
+            offset: 0, color: '#0f378f' // 0% 处的颜色
+          }, {
+            offset: 1, color: '#00091a' // 100% 处的颜色
+          }],
+          globalCoord: false // 缺省为 false
         },
-        {
-          name: item[0],
-          type: 'lines',
-          zlevel: 2,
-          effect: {
-            show: true,
-            period: 10,
-            trailLength: 0,
-            symbol: planePath,
-            symbolSize: 15
-          },
-          lineStyle: {
-            normal: {
-              color: color[i],
-              width: 1,
-              opacity: 0.4,
-              curveness: 0.2
-            }
-          },
-          data: convertData(item[1])
-        },
-        {
-          name: item[0],
-          type: 'effectScatter',
-          coordinateSystem: 'geo',
-          zlevel: 2,
-          rippleEffect: {
-            brushType: 'stroke'
-          },
-          label: {
-            normal: {
-              show: true,
-              position: 'right',
-              formatter: '{b}'
-            }
-          },
-          itemStyle: {
-            normal: {
-              color: color[i]
-            }
-          },
-          data: item[1].map(function (dataItem) {
-            let value = geoCoordMap[dataItem[1].name].concat(dataItem[1].value)
-            return {
-              name: dataItem[1].name,
-              value: value
-            }
-          })
-        })
-      })
-      let option = {
-        backgroundColor: 'rgba(6, 30, 93, 0.4)',
         title: {
-          text: '安天下全国分公司',
-          left: 'center',
+          top: 20,
+          text: '安天下全国用户分布',
+          subtext: '',
+          x: 'center',
           textStyle: {
-            color: '#fff',
-            fontSize: '20',
-            lineHeight: '50'
+            color: '#ccc'
           }
         },
-        tooltip: {
-          trigger: 'item',
-          formatter: function (params) {
-            return params.data.name
+        legend: {
+          orient: 'vertical',
+          y: 'bottom',
+          x: 'right',
+          data: ['pm2.5'],
+          textStyle: {
+            color: '#fff'
           }
+        },
+        visualMap: {
+          show: false,
+          min: 0,
+          max: 500,
+          left: 'left',
+          top: 'bottom',
+          text: ['高', '低'], // 文本，默认为数值文本
+          calculable: true,
+          seriesIndex: [1]
         },
         geo: {
           map: 'china',
+          show: true,
+          roam: true,
           label: {
+            normal: {
+              show: false
+            },
             emphasis: {
               show: false
             }
           },
-          roam: true,
           itemStyle: {
             normal: {
-              areaColor: '#323c48',
-              borderColor: '#404a59'
+              areaColor: '#3a7fd5',
+              borderColor: '#0a53e9', // 线
+              shadowColor: '#092f8f', // 外发光
+              shadowBlur: 20
             },
             emphasis: {
-              areaColor: '#2a333d'
+              areaColor: '#0a2dae' // 悬浮区背景
             }
           }
         },
-        series: series
+        series: [
+          {
+            symbolSize: 5,
+            label: {
+              normal: {
+                formatter: '{b}',
+                position: 'right',
+                show: true
+              },
+              emphasis: {
+                show: true
+              }
+            },
+            itemStyle: {
+              normal: {
+                color: '#fff'
+              }
+            },
+            name: 'light',
+            type: 'scatter',
+            coordinateSystem: 'geo',
+            data: convertData(data)
+          },
+          {
+            type: 'map',
+            map: 'china',
+            geoIndex: 0,
+            aspectScale: 0.75, // 长宽比
+            showLegendSymbol: false, // 存在legend时显示
+            label: {
+              normal: {
+                show: false
+              },
+              emphasis: {
+                show: false,
+                textStyle: {
+                  color: '#fff'
+                }
+              }
+            },
+            roam: true,
+            itemStyle: {
+              normal: {
+                areaColor: '#031525',
+                borderColor: '#FFFFFF'
+              },
+              emphasis: {
+                areaColor: '#2B91B7'
+              }
+            },
+            animation: false,
+            data: data
+          },
+          {
+            name: 'Top 5',
+            type: 'scatter',
+            coordinateSystem: 'geo',
+            symbol: 'pin',
+            symbolSize: [50, 50],
+            label: {
+              normal: {
+                show: true,
+                textStyle: {
+                  color: '#fff',
+                  fontSize: 9
+                },
+                formatter (value) {
+                  return value.data.value[2]
+                }
+              }
+            },
+            itemStyle: {
+              normal: {
+                color: '#D8BC37' // 标志颜色
+              }
+            },
+            data: convertData(data),
+            showEffectOn: 'render',
+            rippleEffect: {
+              brushType: 'stroke'
+            },
+            hoverAnimation: true,
+            zlevel: 1
+          }
+        ]
       }
-      // 绘制图表
       myChart.setOption(option)
 
-      myChart.on('click', function (params) {
-        if (params.componentType === 'geo') {
-          console.log('请点击城市')
-        } else if (params.componentType === 'series') {
-          const url = params.data.value[2]
-          window.open(url)
+      this.$http.get('/api/Statistics/user_address').then(function (res) {
+        var data = JSON.parse(res.data)
+        convertData(data)
+        option = {
+          series: [
+            {
+              data: convertData(data)
+            },
+            {
+              data: data
+            },
+            {
+              data: convertData(data)
+            }
+          ]
         }
+        myChart.setOption(option)
       })
     }
   }

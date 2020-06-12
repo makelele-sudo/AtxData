@@ -13,7 +13,6 @@
           </div>
           <div class="block-top-bottom-content">
             <div class="block-top-content">
-              <user-address />
               <china-map />
               <product-mount />
               <water-levelChart />
@@ -36,7 +35,7 @@ import waterLevelChart from './waterLevelChart'
 import productUser from './productUser'
 import rightBottom from './rightBottom'
 import chinaMap from './map'
-import userAddress from './address'
+// import userAddress from './address'
 
 export default {
   name: 'DataView',
@@ -47,7 +46,7 @@ export default {
     productMount,
     waterLevelChart,
     chinaMap,
-    userAddress,
+    // userAddress,
     productUser,
     rightBottom
   },

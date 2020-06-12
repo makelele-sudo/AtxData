@@ -30,7 +30,7 @@ export default {
 
 <style lang="less">
 #water-level-chart {
-  width: 20%;
+  width: 30%;
   margin-left: 20px;
   box-sizing: border-box;
   background-color: rgba(6, 30, 93, 0.5);

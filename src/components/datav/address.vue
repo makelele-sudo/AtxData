@@ -22,16 +22,7 @@ export default {
     fetch () {
       this.$http.get('/api/Statistics/user_address').then(function (res) {
         const data = JSON.parse(res.data)
-        console.log(data)
         this.items = data
-        // const r = data.data
-        // let rows = {}
-        // let list = []
-        // for (let i = 0; i < r.length; i++) {
-        //   rows = { name: r[i].name, 数量: r[i].num }
-        //   list.push(rows)
-        // }
-        // this.chartData.rows = list
       }, function () {
         console.log('请求失败处理')
       })
