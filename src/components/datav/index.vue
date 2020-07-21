@@ -86,7 +86,7 @@ export default {
 
   .block-left-right-content {
     flex: 1;
-    height: calc(75% - 20px);
+    height: calc(85% - 20px);
     display: flex;
     margin-top: 20px;
   }

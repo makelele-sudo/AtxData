@@ -35,6 +35,10 @@ export default {
           lineStyle: {
             color: '#fff'
           }
+        },
+        axisLabel: {
+          rotate: 30,
+          interval: 0
         }
       },
       yAxis: {

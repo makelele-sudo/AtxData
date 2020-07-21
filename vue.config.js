@@ -10,7 +10,7 @@ module.exports = {
     proxy: {
       // 配置跨域
       '/api': {
-        target: 'http://wx.atx.net.cn/index.php/home',
+        target: 'http://bigdatabackend.atx.net.cn/index.php/home',
         ws: true,
         changOrigin: true,
         pathRewrite: {

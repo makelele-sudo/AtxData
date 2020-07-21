@@ -11,7 +11,6 @@ import dataV from '@jiaminghi/data-view'
 Vue.prototype.$echarts = echarts
 Vue.config.productionTip = false
 
-console.log('VUE_APP_BASE_URL', process.env.VUE_APP_BASE_URL)
 Vue.use(dataV)
 Vue.use(VCharts)
 Vue.use(VueResource)

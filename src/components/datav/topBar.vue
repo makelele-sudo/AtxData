@@ -1,27 +1,27 @@
 <template>
   <div id="digital-flop">
-    <div>
+    <div class="digital-flop-item">
       <div class="digital-flop-title">产品数量</div>
       <div class="digital-flop">
-          <span class="num">22</span>
+          <span class="num">{{ productNum }}</span>
           <div class="unit">个</div>
       </div>
     </div>
-    <div>
-      <div class="digital-flop-title">客户数量</div>
+    <div class="digital-flop-item">
+      <div class="digital-flop-title">企业数量</div>
       <div class="digital-flop">
-        <span class="num">92</span>
+        <span class="num">{{ customerNum }}</span>
         <div class="unit">家</div>
       </div>
     </div>
-    <div>
+    <div class="digital-flop-item">
       <div class="digital-flop-title">用户总数</div>
       <div class="digital-flop">
         <span class="num">{{ userTotal }}</span>
         <div class="unit">个</div>
       </div>
     </div>
-    <div>
+    <div class="digital-flop-item">
       <div class="digital-flop-title">今日活跃用户数</div>
       <div class="digital-flop">
         <span class="num">{{ ActivePeopleNum }}</span>
@@ -36,17 +36,19 @@ export default {
   name: 'DigitalFlop',
   data () {
     return {
-      userTotal: 0,
-      ActivePeopleNum: 0
+      productNum: 0, // 产品数量
+      customerNum: 0, // 客户数量
+      userTotal: 0, // 用户总数
+      ActivePeopleNum: 0 // 活跃用户
     }
   },
   mounted () {
-    const { createData } = this
-    createData()
-    setInterval(createData, 86400000)
+    this.createData()
   },
   methods: {
     createData () {
+      this.productNum = 7
+      this.customerNum = 71
       this.$http.get('/api/Statistics/allPeopleNum').then(function (res) {
         const data = JSON.parse(res.data)
         const r = data.data
@@ -89,6 +91,10 @@ export default {
   justify-content: space-around;
   align-items: center;
   background-color: rgba(6, 30, 93, 0.5);
+
+  .item{
+    width: 25%;
+  }
 
   .dv-decoration-10 {
     position: absolute;

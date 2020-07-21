@@ -34,12 +34,15 @@ export default {
       var convertData = function (data) {
         var array = []
         for (var i = 0; i < data.length; i++) {
-          var sheng = data[i].name.replace('省', '').replace('市', '').replace('自治区', '')
+          var sheng = data[i].address
+          if (sheng.search('省') !== -1) {
+            sheng = sheng.replace('省', '')
+          }
           var geoCoord = geoCoordMap[sheng]
           if (geoCoord) {
             array.push({
               name: sheng,
-              value: geoCoord.concat(data[i].value)
+              value: geoCoord.concat(data[i].num)
             })
           }
         }
@@ -61,7 +64,7 @@ export default {
         },
         title: {
           top: 20,
-          text: '安天下全国用户分布',
+          text: '安天下用户分布图',
           subtext: '',
           x: 'center',
           textStyle: {
