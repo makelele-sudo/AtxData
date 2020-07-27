@@ -1,9 +1,9 @@
 <template>
   <div id="rose-chart">
     <div class="clickBtn">
-      <span :class="{ 'active': index === 1 }" @click="handleClick(1)">一周活跃用户</span>
-      <span :class="{ 'active': index === 2 }" @click="handleClick(2)">一月活跃用户</span>
-      <span :class="{ 'active': index === 3 }" @click="handleClick(3)">半年活跃用户</span>
+      <span :class="{ 'active': index === 1 }" @click="handleClick(7, 1)">一周活跃用户</span>
+      <span :class="{ 'active': index === 2 }" @click="handleClick(30, 2)">一月活跃用户</span>
+      <span :class="{ 'active': index === 3 }" @click="handleClick(180, 3)">半年活跃用户</span>
     </div>
     <ve-line
       :data="chartData"
@@ -36,14 +36,14 @@ export default {
       },
       xAxis: {
         show: true,
+        type: 'category',
+        axisLabel: {
+          rotate: 30
+        },
         axisLine: {
           lineStyle: {
             color: '#fff'
           }
-        },
-        axisLabel: {
-          rotate: 30,
-          interval: 0
         }
       },
       yAxis: {
@@ -63,6 +63,7 @@ export default {
     }
     return {
       index: 1,
+      day: 7,
       chartData: {
         columns: ['日期', '未来安全', '学习培训', '人员考勤'],
         rows: [
@@ -74,12 +75,12 @@ export default {
   },
   mounted () {
     const { fetch } = this
-    fetch()
+    fetch(7)
     setInterval(fetch, 86400000)
   },
   methods: {
-    fetch () {
-      this.$http.get('/api/Statistics/ThisWeekActivePeopleNum').then(function (res) {
+    fetch (num) {
+      this.$http.get('/api/Statistics/ThisWeekActivePeopleNum?days=' + num).then(function (res) {
         const data = JSON.parse(res.data)
         var wlaq = {}
         var xxpx = {}
@@ -111,8 +112,9 @@ export default {
         console.log('请求失败处理')
       })
     },
-    handleClick (index) {
+    handleClick (days, index) {
       this.index = index
+      this.fetch(days)
     }
   }
 }

@@ -58,7 +58,7 @@ export default {
       }, function () {
         console.log('请求失败处理')
       })
-      this.$http.get('/api/Statistics/ThisWeekActivePeopleNum').then(function (res) {
+      this.$http.get('/api/Statistics/ThisWeekActivePeopleNum?days=7').then(function (res) {
         const data = JSON.parse(res.data)
         var wlaq = {}
         var xxpx = {}
