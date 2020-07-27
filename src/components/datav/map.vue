@@ -227,7 +227,7 @@ export default {
 
 <style lang="less">
   #myChart {
-    width: 40%;
+    width: 100%;
     height: 100%;
     border-top: 2px solid rgba(1, 153, 209, .5);
     box-sizing: border-box;

@@ -1,8 +1,9 @@
 <template>
   <div class="histogram">
-    <ve-histogram
+    <ve-bar
       :data="chartData"
       :extend="chartExtend"
+      :settings="chartSettings"
     />
   </div>
 </template>
@@ -10,6 +11,9 @@
 <script>
 export default {
   data () {
+    this.chartSettings = {
+      dimension: ['name']
+    }
     this.chartExtend = {
       title: {
         show: true,
@@ -50,9 +54,18 @@ export default {
       },
       grid: {
         top: 80,
-        bottom: 0,
+        bottom: '5%',
         left: 10,
         right: 40
+      },
+      series: {
+        label: {
+          show: true,
+          position: 'right',
+          color: '#58a1ff',
+          fontSize: 20,
+          fontWeight: 'bold'
+        }
       }
     }
     return {
@@ -96,15 +109,11 @@ export default {
 <style lang="less">
   .histogram{
     width: 100%;
-    height: 55%;
-    padding-bottom: 20px;
-    border-top: 2px solid rgba(1, 153, 209, .5);
-    box-sizing: border-box;
+    height: 100%;
 
     .ve-histogram{
       width: 100% !important;
       height: 100% !important;
-      background-color: rgba(6, 30, 93, 0.5);
     }
   }
 

@@ -1,20 +1,6 @@
 <template>
   <div id="digital-flop">
     <div class="digital-flop-item">
-      <div class="digital-flop-title">产品数量</div>
-      <div class="digital-flop">
-          <span class="num">{{ productNum }}</span>
-          <div class="unit">个</div>
-      </div>
-    </div>
-    <div class="digital-flop-item">
-      <div class="digital-flop-title">企业数量</div>
-      <div class="digital-flop">
-        <span class="num">{{ customerNum }}</span>
-        <div class="unit">家</div>
-      </div>
-    </div>
-    <div class="digital-flop-item">
       <div class="digital-flop-title">用户总数</div>
       <div class="digital-flop">
         <span class="num">{{ userTotal }}</span>
@@ -26,6 +12,20 @@
       <div class="digital-flop">
         <span class="num">{{ ActivePeopleNum }}</span>
         <div class="unit">个</div>
+      </div>
+    </div>
+    <div class="digital-flop-item">
+      <div class="digital-flop-title">产品数量</div>
+      <div class="digital-flop">
+          <span class="num">{{ productNum }}</span>
+          <div class="unit">个</div>
+      </div>
+    </div>
+    <div class="digital-flop-item">
+      <div class="digital-flop-title">企业数量</div>
+      <div class="digital-flop">
+        <span class="num">{{ customerNum }}</span>
+        <div class="unit">家</div>
       </div>
     </div>
   </div>

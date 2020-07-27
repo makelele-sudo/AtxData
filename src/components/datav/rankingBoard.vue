@@ -44,7 +44,7 @@ export default {
       },
       grid: {
         top: 80,
-        bottom: '15%',
+        bottom: '5%',
         left: 10,
         right: 10
       }
@@ -77,14 +77,12 @@ export default {
 
 <style lang="less">
 .vline {
-  height: calc( 45% - 5px );
-  border-top: 2px solid rgba(1, 153, 209, .5);
-  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
 
   .ve-waterfall{
     width: 100% !important;
     height: 100% !important;
-    background-color: rgba(6, 30, 93, 0.5);
   }
 }
 </style>

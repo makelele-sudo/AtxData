@@ -53,9 +53,8 @@ export default {
 
 <style lang="less">
 #water-level-chart {
-  width: 30%;
-  margin-left: 20px;
-  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
   background-color: rgba(6, 30, 93, 0.5);
   border-top: 2px solid rgba(1, 153, 209, .5);
   display: flex;
